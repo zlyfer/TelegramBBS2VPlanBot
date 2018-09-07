@@ -353,7 +353,9 @@ DevList = [175576819, 304123618]
 
 BackKeyboard = [[KeyboardButton("⬅️ Zurück")]]
 RegisterKeyboard = [[KeyboardButton("📝 Registrieren"), KeyboardButton("🔐 Anmelden")]]
-updater = Updater(token='349143763:AAH1kGXCp5OzOjoFc7GnxC6A4Wbj9ApVLEI')
+with codecs.open('bot_token.ini', 'r', 'utf-8') as bot_token_file:
+    bot_token = bot_token_file.read()
+updater = Updater(token=bot_token)
 
 #system functions bot
 def console(bot, text = "ERROR", parsemode="HTML"): # WIRD NOCH NICHT ÜBERALL ANGEWANDT!
