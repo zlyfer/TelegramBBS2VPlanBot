@@ -17,7 +17,7 @@ from telegram.ext import MessageHandler, Filters, Updater, CommandHandler, Inlin
 from telegram import InlineQueryResultArticle, InputTextMessageContent, KeyboardButton, InlineKeyboardButton, InlineKeyboardMarkup, ParseMode, ReplyKeyboardMarkup
 
 # misc
-os.chdir("home/zlyfer/TelegramBots/VPlan_Bot2.0/")
+os.chdir("home/zlyfer/TelegramBots/TelegramBBS2VPlanBot/")
 logging.basicConfig(format="\n%(levelname)s: @'%(asctime)s' in '%(name)s':\n> %(message)s", level=logging.INFO)
 
 # variables functions
