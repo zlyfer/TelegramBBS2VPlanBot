@@ -26,8 +26,8 @@ vplanfile = "Vertretungsplan_raw.txt"
 vplanfile_a = "Vertretungsplan_TagA.txt"
 vplanfile_b = "Vertretungsplan_TagB.txt"
 vplanfile_ = "" # Nicht benutzen außer in DBFeeder()!
-rssfile = "/var/www/html/vertretungsplan/rss/rss.xml"
-cardsfile = "/var/www/html/vertretungsplan/cards/cards.html"
+# rssfile = "/var/www/html/vertretungsplan/rss/rss.xml"
+# cardsfile = "/var/www/html/vertretungsplan/cards/cards.html"
 nameentrylist = ["Kurs", "Datum", "Stunde", "Fach", "Raum", "Lehrer", "Info", "Vertretungstext"]
 updateonstart = True
 holidays = False
@@ -268,15 +268,15 @@ def RSSGen():
     cur = db.cursor()
     cur.execute("SELECT `Kurs`, `Datum`, `Stunde`, `Fach`, `Raum`, `Lehrer`, `Info`, `Vertretungstext` FROM `Vertretungsplan` WHERE 1")
     file = codecs.open(rssfile, 'w', 'UTF-8')
-    file.write('<?xml version="1.0" encoding="UTF-8" ?>\n<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom">\n    <channel>\n        <title>BBS II - Vertretungsplan</title>\n        <link>http://zlyfer.de</link>\n        <description>Vertretungsplan der BBS II Emden</description>\n        <atom:link href="http://vplan.zlyfer.de/rss/rss.xml" rel="self" type="application/rss+xml"/>\n')
+    file.write('<?xml version="1.0" encoding="UTF-8" ?>\n<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom">\n    <channel>\n        <title>BBS II - Vertretungsplan</title>\n        <link>http://zlyfer.net</link>\n        <description>Vertretungsplan der BBS II Emden</description>\n        <atom:link href="https://vplan.zlyfer.net/rss/rss.xml" rel="self" type="application/rss+xml"/>\n')
     for i in cur.fetchall():
         Stunden = "Stunden"
         if len(str(i[2])) == 1:
             Stunden = "Stunde"
         file.write("        <item>\n")
         file.write("            <title>%s, %s</title>\n" % (str(i[0]), str(i[1])))
-        file.write("            <link>http://zlyfer.de/vertretungsplan/?kurs=%s</link>\n" % str(i[0]))
-        file.write("            <description><![CDATA[<img src='http://zlyfer.de/vertretungsplan/images/mobile.png'>")
+        file.write("            <link>https://vplan.zlyfer.net/?kurs=%s</link>\n" % str(i[0]))
+        file.write("            <description><![CDATA[<img src='https://vplan.zlyfer.net/images/mobile.png'>")
         file.write("%s %s: %s bei %s in %s: %s, %s" % (Stunden, str(i[2]), str(i[3]), str(i[5]), str(i[4]), str(i[6]), str(i[7])))
         file.write("]]></description>\n")
         file.write("        </item>\n")
@@ -668,7 +668,7 @@ def bot_sendplan(bot, ChatID, Caller, Additional = 0):
         if PlanDic[WochentagStunde] == i[5]:
             Entry += 1
             if User[5] == 1:
-                VPlan += "<strong>Kurs</strong>: <a href='https://zlyfer.de/vertretungsplan/?kurs=%s'>%s</a>\n" % (i[0], i[0])
+                VPlan += "<strong>Kurs</strong>: <a href='https://vplan.zlyfer.net/?kurs=%s'>%s</a>\n" % (i[0], i[0])
             if User[6] == 1:
                 VPlan += "<strong>Datum</strong>: <i>" + i[1] + "</i>\n"
             if User[7] == 1:
@@ -699,7 +699,7 @@ def bot_sendplan(bot, ChatID, Caller, Additional = 0):
             else:
                 bot.sendMessage(chat_id=ChatID, text="Der Kurs '<strong>%s</strong>' ist nicht auf dem Vertretungsplan vermerkt." % Kind, parse_mode="HTML")
     #if Caller == "ZEITPLAN" and HasPlan == 0:
-        #bot.sendMessage(chat_id=ChatID, text="<strong>Info:</strong>\n\nDu willst nur die Vertretungen, die <strong>für dich</strong> relevant sind?\nDann <strong>verbinde dich jetzt</strong> mit deinem Telegram-Account auf unserer <a href='https://zlyfer.de/vertretungsplan/?site=account'>Website</a> und trage <strong>deinen Stundenplan</strong> ein!\n\nMithilfe deines Stundenplans können wir dir die nur für dich <strong>relevanten Daten</strong> senden.", parse_mode="HTML")
+        #bot.sendMessage(chat_id=ChatID, text="<strong>Info:</strong>\n\nDu willst nur die Vertretungen, die <strong>für dich</strong> relevant sind?\nDann <strong>verbinde dich jetzt</strong> mit deinem Telegram-Account auf unserer <a href='https://vplan.zlyfer.net/?site=account'>Website</a> und trage <strong>deinen Stundenplan</strong> ein!\n\nMithilfe deines Stundenplans können wir dir die nur für dich <strong>relevanten Daten</strong> senden.", parse_mode="HTML")
     return
 
 def userconfg(Task, ChatID, Text = "USERCONFGERROR"):
@@ -725,7 +725,7 @@ def userconfg(Task, ChatID, Text = "USERCONFGERROR"):
         RegNoUsAdd = "\n"
         if Text == str(ChatID):
             RegNoUsAdd = "\nDa du keinen Telegram Usernamen hast, ist dein Username nun deine TelegramID <strong>%s</strong>.\n" % ChatID
-        return "Herzlichen Glückwunsch %s! Du wurdest registriert.\n\nWenn du dich auf unserer <a href='https://zlyfer.de/vertretungsplan/?site=account'>Website</a> mit deinem Telegram-Account <strong>verbindest</strong> und deinen <strong>Stundenplan einträgst</strong>, können wir dir die nur für dich <strong>relevanten</strong> Vertretungen schicken.\nProbiere es doch gleich aus!\n%sDein Passwort ist dein Username.\nEs wird <strong>empfohlen</strong>, dein Passwort so schnell wie möglich zu ändern!\n\nBei Fragen kannst du dich <strong>jederzeit</strong> bei mir melden!\n~@zlyfer" % (Text, RegNoUsAdd)
+        return "Herzlichen Glückwunsch %s! Du wurdest registriert.\n\nWenn du dich auf unserer <a href='https://vplan.zlyfer.net/?site=account'>Website</a> mit deinem Telegram-Account <strong>verbindest</strong> und deinen <strong>Stundenplan einträgst</strong>, können wir dir die nur für dich <strong>relevanten</strong> Vertretungen schicken.\nProbiere es doch gleich aus!\n%sDein Passwort ist dein Username.\nEs wird <strong>empfohlen</strong>, dein Passwort so schnell wie möglich zu ändern!\n\nBei Fragen kannst du dich <strong>jederzeit</strong> bei mir melden!\n~@zlyfer" % (Text, RegNoUsAdd)
     elif Task == "toggletimeplan":
         cur.execute("SELECT `Zeitplan` FROM `TelegramBot` WHERE `ChatID`='%s'" % ChatID)
         for i in cur.fetchall():
@@ -909,7 +909,7 @@ def bot_mainhandler(bot, update):
         return
 
     elif "🆔 TelegramID: %s" % update.message.chat_id in Request: # Vielleicht ist das besser als es bei "unknown" zu isolieren.
-        bot.sendMessage(chat_id=update.message.chat_id, parse_mode="HTML", text="Du kannst deine TelegramID benutzen, um dich auf unserer <a href='vplan.zlyfer.de'>Website</a> mit deinem Telegram Account zu verbinden.\nWenn du keinen Nutzernamen in Telegram hast, benutze beim Anmelden deine TelegramID als Nutzername.")
+        bot.sendMessage(chat_id=update.message.chat_id, parse_mode="HTML", text="Du kannst deine TelegramID benutzen, um dich auf unserer <a href='https://vplan.zlyfer.net'>Website</a> mit deinem Telegram Account zu verbinden.\nWenn du keinen Nutzernamen in Telegram hast, benutze beim Anmelden deine TelegramID als Nutzername.")
         return
 
     elif "📓 Mein Kurs (" in Request and ")" in Request:
@@ -1058,9 +1058,9 @@ def bot_start(bot, update):
         bot.sendMessage(chat_id=update.message.chat_id, text="Gruppen sind leider nicht erlaubt.")
         return
     if registercheck(update.message.chat_id) == False:
-        bot.sendMessage(chat_id=update.message.chat_id, text="Hallo, benutze die <strong>Tastatur</strong> um den Bot zu bedienen.\n\n<strong>Hilfe:</strong>\nFalls du zum ersten Mal den Bot benutzt und dich auch noch nicht auf unserer Website registriert hast, benutze den Button <strong>📝 Registrieren</strong>.\nWenn du dich bereits hier beim Bot registriert hast, benutze den Button <strong>🔐 Anmelden</strong> und nutze als Passwort deinen Usernamen.\nWenn du keinen Telegram-Usernamen hast, dann spreche ich dich mit deiner Telegram-ID an. Benutze diese Telegram-ID als Passwort.\nAuf unserer Website kannst du dich mit einem eigenen Passwort registrieren oder dein aktuelles Passwort ändern.\n\nBesuche auch unseren alternativen und <strong>schnelleren</strong> Vertretungsplan: http://vplan.zlyfer.de/vplan.php\n\n<i>Du siehst keine Telegram-Tastatur oder du hast andere Fragen? Dann schreibe mir doch einfach eine Nachricht - Ich helfe gerne!</i>\n~@zlyfer", parse_mode="HTML", reply_markup=ReplyKeyboardMarkup(RegisterKeyboard))
+        bot.sendMessage(chat_id=update.message.chat_id, text="Hallo, benutze die <strong>Tastatur</strong> um den Bot zu bedienen.\n\n<strong>Hilfe:</strong>\nFalls du zum ersten Mal den Bot benutzt und dich auch noch nicht auf unserer Website registriert hast, benutze den Button <strong>📝 Registrieren</strong>.\nWenn du dich bereits hier beim Bot registriert hast, benutze den Button <strong>🔐 Anmelden</strong> und nutze als Passwort deinen Usernamen.\nWenn du keinen Telegram-Usernamen hast, dann spreche ich dich mit deiner Telegram-ID an. Benutze diese Telegram-ID als Passwort.\nAuf unserer Website kannst du dich mit einem eigenen Passwort registrieren oder dein aktuelles Passwort ändern.\n\nBesuche auch unseren alternativen und <strong>schnelleren</strong> Vertretungsplan: https://vplan.zlyfer.net\n\n<i>Du siehst keine Telegram-Tastatur oder du hast andere Fragen? Dann schreibe mir doch einfach eine Nachricht - Ich helfe gerne!</i>\n~@zlyfer", parse_mode="HTML", reply_markup=ReplyKeyboardMarkup(RegisterKeyboard))
     else:
-        bot.sendMessage(chat_id=update.message.chat_id, text="Hallo, benutze die <strong>Tastatur</strong> um den Bot zu bedienen.\n\nBesuche auch unseren alternativen und <strong>schnelleren</strong> Vertretungsplan: http://vplan.zlyfer.de\n\n<i>Du siehst keine Telegram-Tastatur oder du hast andere Fragen? Dann schreibe mir doch einfach eine Nachricht - Ich helfe gerne!</i>\n~@zlyfer", parse_mode="HTML", reply_markup=ReplyKeyboardMarkup(UsrKeyboard))
+        bot.sendMessage(chat_id=update.message.chat_id, text="Hallo, benutze die <strong>Tastatur</strong> um den Bot zu bedienen.\n\nBesuche auch unseren alternativen und <strong>schnelleren</strong> Vertretungsplan: http://vplan.zlyfer.net\n\n<i>Du siehst keine Telegram-Tastatur oder du hast andere Fragen? Dann schreibe mir doch einfach eine Nachricht - Ich helfe gerne!</i>\n~@zlyfer", parse_mode="HTML", reply_markup=ReplyKeyboardMarkup(UsrKeyboard))
     return
 
 def bot_zeitplan_job(bot, job):
