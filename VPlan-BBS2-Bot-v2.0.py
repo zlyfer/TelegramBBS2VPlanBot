@@ -55,6 +55,7 @@ def downloadplan(vplanurl = vplanurl, vplanfile = vplanfile):
         print (logprefix() + "Plan nicht erhalten")
         return "FAILED"
     data = driver.page_source
+    driver.close()
     driver.quit()
     soup = BeautifulSoup(data, "html.parser")
     file = codecs.open(vplanfile, 'w', 'utf-8')
