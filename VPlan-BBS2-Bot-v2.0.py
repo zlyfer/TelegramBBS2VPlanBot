@@ -1096,7 +1096,8 @@ def bot_nocommands(bot, update):
 
 def bot_updateplan_job(bot, job):
     m = strftime("%M")
-    if m in ["15","30","45"]:
+    h = strftime("%H")
+    if m in ["30"] and h in ["00", "03", "06", "09", "12", "15", "18", "21"]:
         #bot.sendMessage(chat_id=-248828335, text="Routine Plan-Update")
         print (logprefix() + "Routine Plan-Update")
         if updateplan() == "FAILED":
