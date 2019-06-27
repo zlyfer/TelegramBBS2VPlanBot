@@ -1083,8 +1083,7 @@ def bot_outoforder(bot, update):
 
 # JOBS -----------------------------------------------------------------------------------------------------------------------------------------------
 
-def bot_updateplan_job():
-    bot = context.bot
+def bot_updateplan_job(bot, job): 
     m = strftime("%M")
     h = strftime("%H")
     if m in ["30"] and h in ["00", "03", "06", "09", "12", "15", "18", "21"]:
@@ -1095,8 +1094,7 @@ def bot_updateplan_job():
             print (logprefix() + "Routine Plan-Update fehlgeschlagen")
     return
 
-def bot_forgot_password():
-    bot = context.bot
+def bot_forgot_password(bot, job): 
     while True:
         try:
             db=MySQLdb.connect(host=DBMYSQLHOST, user=DBMYSQLUSER, passwd=DBMYSQLPASSWD, db=DBMYSQLDB)
@@ -1113,8 +1111,7 @@ def bot_forgot_password():
         bot.sendMessage(chat_id=i[0], parse_mod="HTML", text="Hast du angefordert, dein Passwort zu ändern?", reply_markup=ReplyKeyboardMarkup(PasswordForgotKeyboard))
     return
 
-def bot_zeitplan_job():
-    bot = context.bot
+def bot_zeitplan_job(bot, job): 
     if strftime("%M") == "00": # NICHT-TESTZWECKE
     # if 1 == 1: # TESTZWECKE
         while True:
