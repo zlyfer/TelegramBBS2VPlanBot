@@ -13,7 +13,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from telegram.ext import MessageHandler, Filters, Updater, CommandHandler, InlineQueryHandler, CallbackQueryHandler, Job
+from telegram.ext import MessageHandler, Filters, Updater, CommandHandler, InlineQueryHandler, CallbackQueryHandler, Job, CallbackContext
 from telegram import InlineQueryResultArticle, InputTextMessageContent, KeyboardButton, InlineKeyboardButton, InlineKeyboardMarkup, ParseMode, ReplyKeyboardMarkup
 
 # misc
@@ -1083,7 +1083,7 @@ def bot_outoforder(bot, update):
 
 # JOBS -----------------------------------------------------------------------------------------------------------------------------------------------
 
-def bot_updateplan_job(context: telegram.ext.CallbackContext):
+def bot_updateplan_job(context: CallbackContext):
     bot = context.bot
     m = strftime("%M")
     h = strftime("%H")
@@ -1095,7 +1095,7 @@ def bot_updateplan_job(context: telegram.ext.CallbackContext):
             print (logprefix() + "Routine Plan-Update fehlgeschlagen")
     return
 
-def bot_forgot_password(context: telegram.ext.CallbackContext):
+def bot_forgot_password(context: CallbackContext):
     bot = context.bot
     while True:
         try:
@@ -1113,7 +1113,7 @@ def bot_forgot_password(context: telegram.ext.CallbackContext):
         bot.sendMessage(chat_id=i[0], parse_mod="HTML", text="Hast du angefordert, dein Passwort zu ändern?", reply_markup=ReplyKeyboardMarkup(PasswordForgotKeyboard))
     return
 
-def bot_zeitplan_job(context: telegram.ext.CallbackContext):
+def bot_zeitplan_job(context: CallbackContext):
     bot = context.bot
     if strftime("%M") == "00": # NICHT-TESTZWECKE
     # if 1 == 1: # TESTZWECKE
