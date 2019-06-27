@@ -1064,7 +1064,57 @@ def bot_start(bot, update):
         bot.sendMessage(chat_id=update.message.chat_id, text="Hallo, benutze die <strong>Tastatur</strong> um den Bot zu bedienen.\n\nBesuche auch unseren alternativen und <strong>schnelleren</strong> Vertretungsplan: http://vplan.zlyfer.net\n\n<i>Du siehst keine Telegram-Tastatur oder du hast andere Fragen? Dann schreibe mir doch einfach eine Nachricht - Ich helfe gerne!</i>\n~@zlyfer", parse_mode="HTML", reply_markup=ReplyKeyboardMarkup(UsrKeyboard))
     return
 
-def bot_zeitplan_job(bot, job):
+def bot_nocommands(bot, update):
+    bot.send_chat_action(chat_id=update.message.chat_id, action="TYPING")
+    print (logprefix() + "%s/%s/%s: '%s'" % (update.message.chat.username, update.message.chat.first_name, update.message.chat_id, update.message.text))
+    bot.sendMessage(chat_id=-248828335, text="<strong>%s/%s/%s:</strong>  <i>%s</i>" % (update.message.chat.username, update.message.chat.first_name, update.message.chat_id, update.message.text), parse_mode="HTML")
+    bot.sendMessage(chat_id=update.message.chat_id, text="Ich werde <strong>nicht mehr</strong> mit Befehlen gesteuert.\nBitte benutze die <strong>Telegram-Tastatur</strong> um mich zu steuern.\nFalls du diese nicht siehst, benutze den <strong>einzigen Befehl</strong> /start um mich erneut zu starten.\n\nDanke!", parse_mode="HTML")
+    return
+
+def bot_holidays(bot, update):
+    bot.sendMessage(chat_id=-248828335, text="<strong>%s/%s/%s:</strong>  <i>%s</i>" % (update.message.chat.username, update.message.chat.first_name, update.message.chat_id, update.message.text), parse_mode="HTML")
+    bot.sendMessage(chat_id=update.message.chat_id, text="Es sind <strong>Ferien</strong>, geh raus an die frische Luft!\nBei wichtigen Fragen: @zlyfer", parse_mode="HTML")
+    return
+
+def bot_outoforder(bot, update):
+    bot.sendMessage(chat_id=-248828335, text="<strong>%s/%s/%s:</strong>  <i>%s</i>" % (update.message.chat.username, update.message.chat.first_name, update.message.chat_id, update.message.text), parse_mode="HTML")
+    bot.sendMessage(chat_id=update.message.chat_id, text="<strong>Der Bot ist momentan gestoppt.</strong>\n\nEs liegen <strong>Fehler</strong> vor, die behoben werden müssen und ich kümmere mich so <strong>schnell wie möglich</strong> darum.\nIch bitte um Verständnis, danke!\n\nBei wichtigen Fragen: @zlyfer", parse_mode="HTML")
+    return
+
+# JOBS -----------------------------------------------------------------------------------------------------------------------------------------------
+
+def bot_updateplan_job(context: telegram.ext.CallbackContext):
+    bot = context.bot
+    m = strftime("%M")
+    h = strftime("%H")
+    if m in ["30"] and h in ["00", "03", "06", "09", "12", "15", "18", "21"]:
+        #bot.sendMessage(chat_id=-248828335, text="Routine Plan-Update")
+        print (logprefix() + "Routine Plan-Update")
+        if updateplan() == "FAILED":
+            bot.sendMessage(chat_id=-248828335, text="Routine Plan-Update fehlgeschlagen")
+            print (logprefix() + "Routine Plan-Update fehlgeschlagen")
+    return
+
+def bot_forgot_password(context: telegram.ext.CallbackContext):
+    bot = context.bot
+    while True:
+        try:
+            db=MySQLdb.connect(host=DBMYSQLHOST, user=DBMYSQLUSER, passwd=DBMYSQLPASSWD, db=DBMYSQLDB)
+        except MySQLdb.Error:
+            os.system("systemctl restart mysql")
+            sleep(5)
+        else:
+            break
+    cur = db.cursor()
+    cur.execute("SELECT `TelegramID` FROM `PasswordForgot` WHERE 1")
+    for i in cur.fetchall():
+        bot.sendMessage(chat_id=-248828335, text="<strong>Password Reset Request: </strong><i>%s</i>" % (i[0]), parse_mode="HTML")
+        WhatToDo[i[0]] = "PASSWORD_FORGOT"
+        bot.sendMessage(chat_id=i[0], parse_mod="HTML", text="Hast du angefordert, dein Passwort zu ändern?", reply_markup=ReplyKeyboardMarkup(PasswordForgotKeyboard))
+    return
+
+def bot_zeitplan_job(context: telegram.ext.CallbackContext):
+    bot = context.bot
     if strftime("%M") == "00": # NICHT-TESTZWECKE
     # if 1 == 1: # TESTZWECKE
         while True:
@@ -1087,51 +1137,6 @@ def bot_zeitplan_job(bot, job):
                         bot_sendplan(bot, i[2], "ZEITPLAN")
     return
 
-def bot_nocommands(bot, update):
-    bot.send_chat_action(chat_id=update.message.chat_id, action="TYPING")
-    print (logprefix() + "%s/%s/%s: '%s'" % (update.message.chat.username, update.message.chat.first_name, update.message.chat_id, update.message.text))
-    bot.sendMessage(chat_id=-248828335, text="<strong>%s/%s/%s:</strong>  <i>%s</i>" % (update.message.chat.username, update.message.chat.first_name, update.message.chat_id, update.message.text), parse_mode="HTML")
-    bot.sendMessage(chat_id=update.message.chat_id, text="Ich werde <strong>nicht mehr</strong> mit Befehlen gesteuert.\nBitte benutze die <strong>Telegram-Tastatur</strong> um mich zu steuern.\nFalls du diese nicht siehst, benutze den <strong>einzigen Befehl</strong> /start um mich erneut zu starten.\n\nDanke!", parse_mode="HTML")
-    return
-
-def bot_updateplan_job(bot, job):
-    m = strftime("%M")
-    h = strftime("%H")
-    if m in ["30"] and h in ["00", "03", "06", "09", "12", "15", "18", "21"]:
-        #bot.sendMessage(chat_id=-248828335, text="Routine Plan-Update")
-        print (logprefix() + "Routine Plan-Update")
-        if updateplan() == "FAILED":
-            bot.sendMessage(chat_id=-248828335, text="Routine Plan-Update fehlgeschlagen")
-            print (logprefix() + "Routine Plan-Update fehlgeschlagen")
-    return
-
-def bot_forgot_password(bot, job):
-    while True:
-        try:
-            db=MySQLdb.connect(host=DBMYSQLHOST, user=DBMYSQLUSER, passwd=DBMYSQLPASSWD, db=DBMYSQLDB)
-        except MySQLdb.Error:
-            os.system("systemctl restart mysql")
-            sleep(5)
-        else:
-            break
-    cur = db.cursor()
-    cur.execute("SELECT `TelegramID` FROM `PasswordForgot` WHERE 1")
-    for i in cur.fetchall():
-        bot.sendMessage(chat_id=-248828335, text="<strong>Password Reset Request: </strong><i>%s</i>" % (i[0]), parse_mode="HTML")
-        WhatToDo[i[0]] = "PASSWORD_FORGOT"
-        bot.sendMessage(chat_id=i[0], parse_mod="HTML", text="Hast du angefordert, dein Passwort zu ändern?", reply_markup=ReplyKeyboardMarkup(PasswordForgotKeyboard))
-    return
-
-def bot_holidays(bot, update):
-    bot.sendMessage(chat_id=-248828335, text="<strong>%s/%s/%s:</strong>  <i>%s</i>" % (update.message.chat.username, update.message.chat.first_name, update.message.chat_id, update.message.text), parse_mode="HTML")
-    bot.sendMessage(chat_id=update.message.chat_id, text="Es sind <strong>Ferien</strong>, geh raus an die frische Luft!\nBei wichtigen Fragen: @zlyfer", parse_mode="HTML")
-    return
-
-def bot_outoforder(bot, update):
-    bot.sendMessage(chat_id=-248828335, text="<strong>%s/%s/%s:</strong>  <i>%s</i>" % (update.message.chat.username, update.message.chat.first_name, update.message.chat_id, update.message.text), parse_mode="HTML")
-    bot.sendMessage(chat_id=update.message.chat_id, text="<strong>Der Bot ist momentan gestoppt.</strong>\n\nEs liegen <strong>Fehler</strong> vor, die behoben werden müssen und ich kümmere mich so <strong>schnell wie möglich</strong> darum.\nIch bitte um Verständnis, danke!\n\nBei wichtigen Fragen: @zlyfer", parse_mode="HTML")
-    return
-
 #bot init
 if holidays == True:
     updater.dispatcher.add_handler(MessageHandler(Filters.text, bot_holidays))
@@ -1143,9 +1148,12 @@ else:
     updater.dispatcher.add_handler(MessageHandler(Filters.text, bot_mainhandler))
     updater.dispatcher.add_handler(CommandHandler('start', bot_start))
     updater.dispatcher.add_handler(MessageHandler(Filters.command, bot_nocommands))
-    updater.job_queue.put(Job(bot_zeitplan_job, 60.0), next_t=0.0)
-    updater.job_queue.put(Job(bot_updateplan_job, 60.0), next_t=0.0)
-    updater.job_queue.put(Job(bot_forgot_password, 60.0), next_t=0.0)
+    updater.job_queue.run_repeating(bot_zeitplan_job, 0, 60)
+    updater.job_queue.run_repeating(bot_updateplan_job, 0, 60)
+    updater.job_queue.run_repeating(bot_forgot_password, 0, 60)
+#updater.job_queue.put(Job(bot_zeitplan_job, 60.0), next_t=0.0)
+#updater.job_queue.put(Job(bot_updateplan_job, 60.0), next_t=0.0)
+#updater.job_queue.put(Job(bot_forgot_password, 60.0), next_t=0.0)
 
 #bot start
 print (logprefix() + "Bot gestartet")
