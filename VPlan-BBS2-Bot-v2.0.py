@@ -17,7 +17,7 @@ from telegram.ext import MessageHandler, Filters, Updater, CommandHandler, Inlin
 from telegram import InlineQueryResultArticle, InputTextMessageContent, KeyboardButton, InlineKeyboardButton, InlineKeyboardMarkup, ParseMode, ReplyKeyboardMarkup
 
 # misc
-os.chdir("home/zlyfer/TelegramBots/TelegramBBS2VPlanBot/")
+# os.chdir("home/zlyfer/TelegramBots/TelegramBBS2VPlanBot/")
 logging.basicConfig(format="\n%(levelname)s: @'%(asctime)s' in '%(name)s':\n> %(message)s", level=logging.INFO)
 
 # variables functions
@@ -431,7 +431,8 @@ def keyboardgen(ChatID):
                         [KeyboardButton("%s Zeitplan Zeiten (%s/24)" % (ZZIcon, ZeitenAnzahl))],
                         [KeyboardButton("ℹ️ Plan Informationen")],
                         [KeyboardButton("🔄 Kurs wechseln (%s)" % SettingsKeyboardVars[1])],
-                        [KeyboardButton("🆔 TelegramID: %s" % ChatID)],
+                        [KeyboardButton("🆔 Telegram ID: %s" % ChatID)],
+                        [KeyboardButton("📱 Android App")],
                         [KeyboardButton("⬅️ Zurück"), KeyboardButton("🙋🏼‍♂️ Hilfe")]]
     InfoKeyboardVars = []
     for n in ["Kurs", "Datum", "Stunde", "Fach", "Raum", "Lehrer", "Info", "Vertretungstext"]:
@@ -909,8 +910,12 @@ def bot_mainhandler(bot, update):
         bot_sendplan(bot, update.message.chat_id, "EVERYTHING")
         return
 
-    elif "🆔 TelegramID: %s" % update.message.chat_id in Request: # Vielleicht ist das besser als es bei "unknown" zu isolieren.
+    elif "🆔 Telegram ID: %s" % update.message.chat_id in Request: # Vielleicht ist das besser als es bei "unknown" zu isolieren.
         bot.sendMessage(chat_id=update.message.chat_id, parse_mode="HTML", text="Du kannst deine TelegramID benutzen, um dich auf unserer <a href='https://vplan.zlyfer.net'>Website</a> mit deinem Telegram Account zu verbinden.\nWenn du keinen Nutzernamen in Telegram hast, benutze beim Anmelden deine TelegramID als Nutzername.")
+        return
+
+    elif "📱 Android App" in Request:
+        bot.sendMessage(chat_id=update.message.chat_id, parse_mode="HTML", text="Es gibt jetzt eine Android App (Irgendwann auch iOS!). Auf meiner <a href='https://github.com/zlyfer/fertretungsplan/releases'>GitHub Seite</a> kannst du die neueste Version einfach herunterladen. Falls du Hilfe beim Installieren brauchst kannst du <a href='https://www.heise.de/tipps-tricks/Externe-Apps-APK-Dateien-bei-Android-installieren-so-klappt-s-3714330.html'>hier</a> klicken oder mich anschreiben: @zlyfer")
         return
 
     elif "📓 Mein Kurs (" in Request and ")" in Request:
