@@ -918,6 +918,10 @@ def bot_mainhandler(bot, update):
         bot.sendMessage(chat_id=update.message.chat_id, parse_mode="HTML", text="Es gibt jetzt eine Android App (Irgendwann auch iOS!). Auf meiner <a href='https://github.com/zlyfer/fertretungsplan/releases'>GitHub Seite</a> kannst du die neueste Version einfach herunterladen. Falls du Hilfe beim Installieren brauchst kannst du <a href='https://www.heise.de/tipps-tricks/Externe-Apps-APK-Dateien-bei-Android-installieren-so-klappt-s-3714330.html'>hier</a> klicken oder mich anschreiben: @zlyfer")
         return
 
+    elif "/start" in Request:
+        bot_start(bot, update)
+        return
+
     elif "📓 Mein Kurs (" in Request and ")" in Request:
         bot_sendplan(bot, update.message.chat_id, "MYPLAN")
         return
@@ -1064,9 +1068,9 @@ def bot_start(bot, update):
         bot.sendMessage(chat_id=update.message.chat_id, text="Gruppen sind leider nicht erlaubt.")
         return
     if registercheck(update.message.chat_id) == False:
-        bot.sendMessage(chat_id=update.message.chat_id, text="Hallo, benutze die <strong>Tastatur</strong> um den Bot zu bedienen.\n\n<strong>Hilfe:</strong>\nFalls du zum ersten Mal den Bot benutzt und dich auch noch nicht auf unserer Website registriert hast, benutze den Button <strong>📝 Registrieren</strong>.\nWenn du dich bereits hier beim Bot registriert hast, benutze den Button <strong>🔐 Anmelden</strong> und nutze als Passwort deinen Usernamen.\nWenn du keinen Telegram-Usernamen hast, dann spreche ich dich mit deiner Telegram-ID an. Benutze diese Telegram-ID als Passwort.\nAuf unserer Website kannst du dich mit einem eigenen Passwort registrieren oder dein aktuelles Passwort ändern.\n\nBesuche auch unseren alternativen und <strong>schnelleren</strong> Vertretungsplan: https://vplan.zlyfer.net\n\n<i>Du siehst keine Telegram-Tastatur oder du hast andere Fragen? Dann schreibe mir doch einfach eine Nachricht - Ich helfe gerne!</i>\n~@zlyfer", parse_mode="HTML", reply_markup=ReplyKeyboardMarkup(RegisterKeyboard))
+        bot.sendMessage(chat_id=update.message.chat_id, text="Hallo, benutze die <strong>Tastatur</strong> um den Bot zu bedienen.\n\n<strong>Hilfe:</strong>\nFalls du zum ersten Mal den Bot benutzt und dich auch noch nicht auf unserer Website registriert hast, benutze den Button <strong>📝 Registrieren</strong>.\nWenn du dich bereits hier beim Bot registriert hast, benutze den Button <strong>🔐 Anmelden</strong> und nutze als Passwort deinen Usernamen.\nWenn du keinen Telegram-Usernamen hast, dann spreche ich dich mit deiner Telegram-ID an. Benutze diese Telegram-ID als Passwort.\nAuf unserer Website kannst du dich mit einem eigenen Passwort registrieren oder dein aktuelles Passwort ändern.\n\nBesuche auch unseren alternativen und <strong>schnelleren</strong> Vertretungsplan: https://vplan.zlyfer.net\n\n<i>Du siehst keine Telegram-Tastatur oder du hast andere Fragen? Dann schreibe mir doch einfach eine Nachricht.</i>\n~@zlyfer", parse_mode="HTML", reply_markup=ReplyKeyboardMarkup(RegisterKeyboard))
     else:
-        bot.sendMessage(chat_id=update.message.chat_id, text="Hallo, benutze die <strong>Tastatur</strong> um den Bot zu bedienen.\n\nBesuche auch unseren alternativen und <strong>schnelleren</strong> Vertretungsplan: http://vplan.zlyfer.net\n\n<i>Du siehst keine Telegram-Tastatur oder du hast andere Fragen? Dann schreibe mir doch einfach eine Nachricht - Ich helfe gerne!</i>\n~@zlyfer", parse_mode="HTML", reply_markup=ReplyKeyboardMarkup(UsrKeyboard))
+        bot.sendMessage(chat_id=update.message.chat_id, text="Hallo, benutze die <strong>Tastatur</strong> um den Bot zu bedienen.\n\nBesuche auch unseren alternativen und <strong>schnelleren</strong> Vertretungsplan: http://vplan.zlyfer.net\n\n<i>Du siehst keine Telegram-Tastatur oder du hast andere Fragen? Dann schreibe mir doch einfach eine Nachricht.</i>\n~@zlyfer", parse_mode="HTML", reply_markup=ReplyKeyboardMarkup(UsrKeyboard))
     return
 
 def bot_nocommands(bot, update):
