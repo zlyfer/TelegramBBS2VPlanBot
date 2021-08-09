@@ -1,9 +1,10 @@
 # modules
 import os
+import signal
 import codecs
-import MySQLdb
 import logging
 import hashlib
+import MySQLdb
 from datetime import date
 from random import randint
 from bs4 import BeautifulSoup
@@ -18,6 +19,7 @@ from telegram import InlineQueryResultArticle, InputTextMessageContent, Keyboard
 
 # misc
 os.chdir("home/zlyfer/TelegramBots/TelegramBBS2VPlanBot/")
+# os.chdir("C:/Users/frede/Documents/GitHub/TelegramBBS2VPlanBot/")
 logging.basicConfig(format="\n%(levelname)s: @'%(asctime)s' in '%(name)s':\n> %(message)s", level=logging.INFO)
 
 # variables functions
@@ -53,10 +55,12 @@ def downloadplan(vplanurl = vplanurl, vplanfile = vplanfile):
         wait.until(EC.visibility_of_element_located((By.CLASS_NAME, "oddGroup")))
     except:
         print (logprefix() + "Plan nicht erhalten")
+        driver.service.process.send_signal(signal.SIGTERM)
+        driver.quit()    
         return "FAILED"
     data = driver.page_source
-    driver.close()
-    driver.quit()
+    driver.service.process.send_signal(signal.SIGTERM)
+    driver.quit()    
     soup = BeautifulSoup(data, "html.parser")
     file = codecs.open(vplanfile, 'w', 'utf-8')
     #file.write(soup.get_text("\n"))
