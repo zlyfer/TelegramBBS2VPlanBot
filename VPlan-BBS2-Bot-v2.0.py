@@ -355,7 +355,7 @@ DevKeyboardA = [[KeyboardButton("📋 Vertretungspläne"), KeyboardButton("⚙�
 DevKeyboardB = [[KeyboardButton("👾 Telegram-Bot neustarten"), KeyboardButton("👾 MySQL neustarten")], [KeyboardButton("👾 Apache neustarten"), KeyboardButton("👾 Vertretungsplan updaten")]]
 DevKeyboardB.append([KeyboardButton("🏠 Hauptmenü")])
 PasswordForgotKeyboard = [[KeyboardButton("✔️ Ja"), KeyboardButton("❌ Nein")]]
-DevList = [175576819, 304123618]
+DevList = [175576819]
 
 BackKeyboard = [[KeyboardButton("⬅️ Zurück")]]
 RegisterKeyboard = [[KeyboardButton("📝 Registrieren"), KeyboardButton("🔐 Anmelden")]]
