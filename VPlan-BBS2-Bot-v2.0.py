@@ -31,7 +31,7 @@ vplanfile_ = "" # Nicht benutzen außer in DBFeeder()!
 # rssfile = "/var/www/html/vertretungsplan/rss/rss.xml"
 # cardsfile = "/var/www/html/vertretungsplan/cards/cards.html"
 nameentrylist = ["Kurs", "Datum", "Stunde", "Fach", "Raum", "Lehrer", "Info", "Vertretungstext"]
-updateonstart = True
+updateonstart = False
 holidays = False
 outoforder = False
 if holidays == True or outoforder == True:
