@@ -205,7 +205,7 @@ def DBFeeder():
         try:
             db=MySQLdb.connect(host=DBMYSQLHOST, user=DBMYSQLUSER, passwd=DBMYSQLPASSWD, db=DBMYSQLDB)
         except MySQLdb.Error:
-            os.system("systemctl restart mysql")
+            # os.system("systemctl restart mysql")
             sleep(5)
         else:
             break
@@ -266,7 +266,7 @@ def RSSGen():
         try:
             db=MySQLdb.connect(host=DBMYSQLHOST, user=DBMYSQLUSER, passwd=DBMYSQLPASSWD, db=DBMYSQLDB)
         except MySQLdb.Error:
-            os.system("systemctl restart mysql")
+            # os.system("systemctl restart mysql")
             sleep(5)
         else:
             break
@@ -296,7 +296,7 @@ def CardsGen():
         try:
             db=MySQLdb.connect(host=DBMYSQLHOST, user=DBMYSQLUSER, passwd=DBMYSQLPASSWD, db=DBMYSQLDB)
         except MySQLdb.Error:
-            os.system("systemctl restart mysql")
+            # os.system("systemctl restart mysql")
             sleep(5)
         else:
             break
@@ -349,7 +349,8 @@ Icons2 = ["🔔", "🔕"]
 Icons3 = ["🕐", "🕑", "🕒", "🕓", "🕔", "🕕", "🕖", "🕗", "🕘", "🕙", "🕚", "🕛", "🕜", "🕝"," 🕟", "🕞", "🕠", "🕡", "🕢", "🕣", "🕤", "🕥", "🕦", "🕧"]
 Icons4 = ["📙", "📗", "📘", "📕"]
 Icons5 = ["❓", "❗️"]
-UsrKeyboard = [[KeyboardButton("📋 Vertretungspläne"), KeyboardButton("⚙️ Einstellungen")]]#, [KeyboardButton("Website")]]
+# UsrKeyboard = [[KeyboardButton("📋 Vertretungspläne"), KeyboardButton("⚙️ Einstellungen")]]#, [KeyboardButton("Website")]]
+UsrKeyboard = [[KeyboardButton("📋 Vertretungspläne")]]
 DevKeyboardA = [[KeyboardButton("📋 Vertretungspläne"), KeyboardButton("⚙️ Einstellungen")], [KeyboardButton("👾 Entwicklereinstellungen")]]
 DevKeyboardB = [[KeyboardButton("👾 Telegram-Bot neustarten"), KeyboardButton("👾 MySQL neustarten")], [KeyboardButton("👾 Apache neustarten"), KeyboardButton("👾 Vertretungsplan updaten")]]
 DevKeyboardB.append([KeyboardButton("🏠 Hauptmenü")])
@@ -377,7 +378,7 @@ def keyboardgen(ChatID):
         try:
             db=MySQLdb.connect(host=DBMYSQLHOST, user=DBMYSQLUSER, passwd=DBMYSQLPASSWD, db=DBMYSQLDB)
         except MySQLdb.Error:
-            os.system("systemctl restart mysql")
+            # os.system("systemctl restart mysql")
             sleep(5)
         else:
             break
@@ -492,7 +493,7 @@ def registercheck(ChatID, Username = "0"):
         try:
             db=MySQLdb.connect(host=DBMYSQLHOST, user=DBMYSQLUSER, passwd=DBMYSQLPASSWD, db=DBMYSQLDB)
         except MySQLdb.Error:
-            os.system("systemctl restart mysql")
+            # os.system("systemctl restart mysql")
             sleep(5)
         else:
             break
@@ -508,7 +509,7 @@ def login(ChatID, Username, Password):
         try:
             db=MySQLdb.connect(host=DBMYSQLHOST, user=DBMYSQLUSER, passwd=DBMYSQLPASSWD, db=DBMYSQLDB)
         except MySQLdb.Error:
-            os.system("systemctl restart mysql")
+            # os.system("systemctl restart mysql")
             sleep(5)
         else:
             break
@@ -535,7 +536,7 @@ def updatename(ChatID, Username):
         try:
             db=MySQLdb.connect(host=DBMYSQLHOST, user=DBMYSQLUSER, passwd=DBMYSQLPASSWD, db=DBMYSQLDB)
         except MySQLdb.Error:
-            os.system("systemctl restart mysql")
+            # os.system("systemctl restart mysql")
             sleep(5)
         else:
             break
@@ -563,7 +564,7 @@ def bot_sendplan(bot, ChatID, Caller, Additional = 0):
         try:
             db=MySQLdb.connect(host=DBMYSQLHOST, user=DBMYSQLUSER, passwd=DBMYSQLPASSWD, db=DBMYSQLDB)
         except MySQLdb.Error:
-            os.system("systemctl restart mysql")
+            # os.system("systemctl restart mysql")
             sleep(5)
         else:
             break
@@ -713,7 +714,7 @@ def userconfg(Task, ChatID, Text = "USERCONFGERROR"):
         try:
             db=MySQLdb.connect(host=DBMYSQLHOST, user=DBMYSQLUSER, passwd=DBMYSQLPASSWD, db=DBMYSQLDB)
         except MySQLdb.Error:
-            os.system("systemctl restart mysql")
+            # os.system("systemctl restart mysql")
             sleep(5)
         else:
             break
@@ -826,7 +827,7 @@ def bot_mainhandler(bot, update):
                 DevSysAction(bot, update, "systemctl restart vplanbot")
                 return
             elif Request == "👾 MySQL neustarten":
-                DevSysAction(bot, update, "systemctl restart mysql")
+                # DevSysAction(bot, update, "systemctl restart mysql")
                 return
             elif Request == "👾 Apache neustarten":
                 DevSysAction(bot, update, "systemctl restart apache2")
@@ -853,7 +854,7 @@ def bot_mainhandler(bot, update):
         try:
             db=MySQLdb.connect(host=DBMYSQLHOST, user=DBMYSQLUSER, passwd=DBMYSQLPASSWD, db=DBMYSQLDB)
         except MySQLdb.Error:
-            os.system("systemctl restart mysql")
+            # os.system("systemctl restart mysql")
             sleep(5)
         else:
             break
@@ -1034,7 +1035,7 @@ def bot_mainhandler(bot, update):
                 try:
                     db=MySQLdb.connect(host=DBMYSQLHOST, user=DBMYSQLUSER, passwd=DBMYSQLPASSWD, db=DBMYSQLDB)
                 except MySQLdb.Error:
-                    os.system("systemctl restart mysql")
+                    # os.system("systemctl restart mysql")
                     sleep(5)
                 else:
                     break
@@ -1112,7 +1113,7 @@ def bot_forgot_password(bot, job):
         try:
             db=MySQLdb.connect(host=DBMYSQLHOST, user=DBMYSQLUSER, passwd=DBMYSQLPASSWD, db=DBMYSQLDB)
         except MySQLdb.Error:
-            os.system("systemctl restart mysql")
+            # os.system("systemctl restart mysql")
             sleep(5)
         else:
             break
@@ -1131,7 +1132,7 @@ def bot_zeitplan_job(bot, job):
             try:
                 db=MySQLdb.connect(host=DBMYSQLHOST, user=DBMYSQLUSER, passwd=DBMYSQLPASSWD, db=DBMYSQLDB)
             except MySQLdb.Error:
-                os.system("systemctl restart mysql")
+                # os.system("systemctl restart mysql")
                 sleep(5)
             else:
                 break
@@ -1158,8 +1159,8 @@ else:
     updater.dispatcher.add_handler(MessageHandler(Filters.text, bot_mainhandler))
     updater.dispatcher.add_handler(CommandHandler('start', bot_start))
     updater.dispatcher.add_handler(MessageHandler(Filters.command, bot_nocommands))
-    updater.job_queue.run_repeating(bot_zeitplan_job, 60, 0)
-    updater.job_queue.run_repeating(bot_updateplan_job, 60, 0)
+    # updater.job_queue.run_repeating(bot_zeitplan_job, 60, 0)
+    # updater.job_queue.run_repeating(bot_updateplan_job, 60, 0)
     updater.job_queue.run_repeating(bot_forgot_password, 60, 0)
 #updater.job_queue.put(Job(bot_zeitplan_job, 60.0), next_t=0.0)
 #updater.job_queue.put(Job(bot_updateplan_job, 60.0), next_t=0.0)
